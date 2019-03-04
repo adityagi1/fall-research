@@ -5,7 +5,8 @@
 #include <queue>
 #include <list>
 #include <iterator>
-
+#ifndef DATA_STRUCTURES_H
+#define DATA_STRUCTURES_H
 using namespace std;
 
 class Vertex {
@@ -28,9 +29,10 @@ public:
 	double capacity;
 public:
 	Edge (int a, int b, double cap) {
-	start_vertex = a;
-	end_vertex = b;
-	capacity = cap;}
+		start_vertex = a;
+		end_vertex = b;
+		capacity = cap;
+	}
 
 	void print_me() {
 		printf("(%i,%i):%i",start_vertex,end_vertex,capacity);
@@ -88,3 +90,6 @@ public:
 	list<int> parents(int vertex_no);
 	void add_child(int parent_vertex_no, int child_vertex_no, double edge_weight);
 };
+
+
+#endif

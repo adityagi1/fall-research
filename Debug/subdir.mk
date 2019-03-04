@@ -8,21 +8,21 @@ CPP_SRCS += \
 ../IsolationBranchTree.cpp \
 ../STMinCutSolver.cpp \
 ../data_structures.cpp \
-../testFile.cpp 
+../main.cpp 
 
 OBJS += \
 ./BranchBoundNode.o \
 ./IsolationBranchTree.o \
 ./STMinCutSolver.o \
 ./data_structures.o \
-./testFile.o 
+./main.o 
 
 CPP_DEPS += \
 ./BranchBoundNode.d \
 ./IsolationBranchTree.d \
 ./STMinCutSolver.d \
 ./data_structures.d \
-./testFile.d 
+./main.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

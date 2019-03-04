@@ -1,4 +1,5 @@
 #include "BranchBoundNode.h"
+#include "data_structures.h"
 
 Graph BranchBoundNode::get_graph() {
 	return refGraph;
@@ -116,7 +117,7 @@ map<int, Vertex> BranchBoundNode::compute_source_set(int source_vertex_no) {
 	}
 
 double BranchBoundNode::compute_score() {
-	list<Edge> all_edges = refGraph.edges();
+	list<Edge> all_edges = refGraph.get_edges();
 	double sum = 0;
 	map<int,Vertex> curr_seed_set;
 	for (Vertex curr_terminal : terminal_set) {

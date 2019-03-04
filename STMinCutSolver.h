@@ -1,4 +1,10 @@
 #include "data_structures.h"
+#ifndef STMINCUTSOLVER_H
+#define STMINCUTSOLVER_H
+
+
+//some function definitions
+void initialize(int num_nodes, int num_edges, double** arg_adj_mat);
 
 class STMinCutSolver {
 public:
@@ -24,4 +30,6 @@ public:
 	}
 	double solve_max_flow();
 	list <Edge> solve_min_cut();
-}
+};
+
+#endif

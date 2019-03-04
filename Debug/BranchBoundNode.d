@@ -1,6 +1,10 @@
-BranchBoundNode.o: ../BranchBoundNode.cpp ../data_structures.cpp \
- ../STMinCutSolver.cpp
+BranchBoundNode.o: ../BranchBoundNode.cpp ../BranchBoundNode.h \
+ ../STMinCutSolver.cpp ../STMinCutSolver.h ../data_structures.h
 
-../data_structures.cpp:
+../BranchBoundNode.h:
 
 ../STMinCutSolver.cpp:
+
+../STMinCutSolver.h:
+
+../data_structures.h:

@@ -7,6 +7,8 @@ from http://www.aduni.org/courses/algorithms/courseware/handouts/Reciation_09.ht
 
 #include "STMinCutSolver.h"
 #include <list>
+#include "data_structures.h"
+
 
 //Basic Definitions
 #define WHITE 0
@@ -19,10 +21,10 @@ from http://www.aduni.org/courses/algorithms/courseware/handouts/Reciation_09.ht
 //Declarations
 int n;  // number of nodes
 int e;  // number of edges
-double** capacity; // capacity matrix
-double** flow;     // flow matrix
-int color[]; // needed for breadth-first search
-int pred[];  // array to store augmenting path
+double capacity[MAX_NODES][MAX_NODES]; // capacity matrix
+double flow[MAX_NODES][MAX_NODES];     // flow matrix
+int color[MAX_NODES]; // needed for breadth-first search
+int pred[MAX_NODES];  // array to store augmenting path
 
 
 double min (double x, double y) {
@@ -63,10 +65,10 @@ void initialize(int num_nodes, int num_edges, double** arg_adj_mat) {
   }
   n = num_nodes;
   e = num_edges;
-  capacity = new double[n][n];
-  flow = new double[n][n];
-  color = new int[n];
-  pred = new int[n];
+  //capacity = new double[MAX_NODES][MAX_NODES];
+  //flow = new double[MAX_NODES][MAX_NODES];
+  //color = new int[n];
+  //pred = new int[n];
   arr_cpy(capacity, arg_adj_mat, n);
 }
 
@@ -137,9 +139,9 @@ double STMinCutSolver::solve_max_flow() {
 list <Edge> STMinCutSolver::solve_min_cut() {
 	list<Edge> ret_list;
 	Edge saturated_edge;
-	double** adj_mat = thisGraph.get_adj_mat();
-	for (int r = 0; r < thisGraph.get_graph_size;r++) {
-		for (int c = 0; c < thisGraph.get_graph_size;c++) {
+	//double** adj_mat = thisGraph.get_adj_mat();
+	for (int r = 0; r < thisGraph.get_graph_size();r++) {
+		for (int c = 0; c < thisGraph.get_graph_size();c++) {
 			if (flow[r][c] == capacity[r][c]) {
 				saturated_edge = Edge(r,c,capacity[r][c]);
 				ret_list.push_back(saturated_edge);

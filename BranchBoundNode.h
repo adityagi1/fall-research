@@ -2,6 +2,8 @@
 #include <set>
 #include <map>
 #define INFINITY 1000000.0
+#ifndef BRANCHBOUNDNODE_H
+#define BRANCHBOUNDNODE_H
 
 class BranchBoundNode{
 private:
@@ -37,3 +39,5 @@ public:
 	double compute_score();
 	bool is_leaf_node();
 };
+
+#endif

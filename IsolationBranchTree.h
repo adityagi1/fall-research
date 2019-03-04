@@ -3,6 +3,8 @@
 #include <queue>
 #include "STMinCutSolver.cpp"
 #include "BranchBoundNode.h"
+#ifndef ISOLATIONBRANCHTREE_H
+#define ISOLATIONBRANCHTREE_H
 
 //a comparision class to compare BranchBoundNode objects (used for PQ)
 class Compare {
@@ -37,3 +39,5 @@ public:
 	void execute();
 	map<int,list<int>> show_final_seed_sets();
 };
+
+#endif
