@@ -13,7 +13,7 @@ int Graph::get_num_edges() {
 }
 
 //accessor method for adjacency matrix
-double** Graph::get_adj_mat() {
+double[][] Graph::get_adj_mat() {
 	return adj_mat;
 }
 

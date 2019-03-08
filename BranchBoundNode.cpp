@@ -1,5 +1,6 @@
 #include "BranchBoundNode.h"
 #include "data_structures.h"
+#include "STMinCutSolver.h"
 
 Graph BranchBoundNode::get_graph() {
 	return refGraph;

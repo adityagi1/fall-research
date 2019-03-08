@@ -6,28 +6,123 @@ from http://www.aduni.org/courses/algorithms/courseware/handouts/Reciation_09.ht
 */
 
 #include "STMinCutSolver.h"
-#include <list>
-#include "data_structures.h"
 
 
-//Basic Definitions
-#define WHITE 0
-#define GRAY 1
-#define BLACK 2
-#define MAX_NODES 1000
-#define oo 1000000000.0
+STMinCutSolver::STMinCutSolver(Graph argGraph, Vertex sv, Vertex tv) {
+			thisGraph = argGraph;
+			sourceVertex = sv;
+			terminalVertex = tv;
+			//as max-flow value is currently zero
+			max_flow_min_cut = 0;
+			//capacity contains capacity of adjacency matrix representation
+			capacity = argGraph.get_adj_mat();
+			flow = {{0}};
+}
+bool STMinCutSolver::bfs(int start, int target){
+	//u,v represent vertices
+	int u,v;
+	//n represents number of vertices in graph
+	int n = thisGraph.get_graph_size();
+	// pred containing path
+	int pred[n];
+	//color contains whether a node is visited (BLACK), in queue (GREY), or unvisited (WHITE)
+	int color[n];
+	//queue to store nodes waiting to be processed
+	queue<int> myQueue;
+	//set all nodes to be unvisited (WHITE)
+	for (u = 0; u < n; u++) {
+		color[u] = WHITE;
+	}
+	pred[start] = -1;
+	myQueue.push(start);
+	color[start] == GRAY;
+	while (!(myQueue.empty())) {
+		//retreive the next element from myQueue
+		u = myQueue.front();
+		//and then pop it out of the queue
+		myQueue.pop();
+		color[u] = BLACK;
+        // Search all adjacent white nodes v. If the capacity
+        // from u to v in the residual network is positive,
+        // enqueue v. (implicitly also has to be a neighbor of v)
+		for (v = 0; v< n; v++) {
+			if (color[v] == WHITE && capacity[u][v] - flow[u][v] > 0.0) {
+				myQueue.push(v);
+				color[v] == GRAY;
+				pred[v] = u;
+			}
+		}
+	}
+	//if the color of the target node is black, that means it was reached from START.(and path exists)
+	return color[target] == BLACK;
+}
 
 
-//Declarations
-int n;  // number of nodes
-int e;  // number of edges
-double capacity[MAX_NODES][MAX_NODES]; // capacity matrix
-double flow[MAX_NODES][MAX_NODES];     // flow matrix
-int color[MAX_NODES]; // needed for breadth-first search
-int pred[MAX_NODES];  // array to store augmenting path
 
 
-double min (double x, double y) {
+//implementations
+double STMinCutSolver::solve_max_flow() {
+	double max_flow;
+	int s = sourceVertex.vertex_no;
+	int t = terminalVertex.vertex_no;
+	int n = thisGraph.get_graph_size();
+	int i,j,u;
+	int pred[n];
+	//initialize empty flow
+	for (i = 0; i<n;i++) {
+		for (j = 0; j < n;j++) {
+			flow[i][j] = 0.0;
+		}
+	}
+	//while there is an augmenting path, increment flow along that path.
+	while (bfs(s,t)) {
+	//first determine the amount by which to increment flow
+		double increment = oo;
+		for (u = n-1; pred[u]>=0; u = pred[u]) {
+			increment = min(increment, capacity[pred[u]][u] - flow[pred[u]][u]);
+		}
+		//now increment the flow
+		for (u = n-1;pred[u] >= 0; u = pred[u]) {
+			flow[pred[u]][u] += increment;
+			flow[u][pred[u]] -= increment;
+		}
+		max_flow += increment;
+	}
+	//no more augmenting paths left, because loop has terminated, so we have max flow.
+	//set max_flow_min_cut to appropriate value
+	max_flow_min_cut = max_flow;
+	return max_flow;
+}
+
+
+list <Edge> STMinCutSolver::solve_min_cut() {
+	list<Edge> ret_list;
+	//double** adj_mat = thisGraph.get_adj_mat();
+	for (int r = 0; r < thisGraph.get_graph_size();r++) {
+		for (int c = 0; c < thisGraph.get_graph_size();c++) {
+			if (flow[r][c] == capacity[r][c]) {
+				ret_list.push_back(Edge(r,c,capacity[r][c]));
+			}
+		}
+	}
+	cut_set = ret_list;
+	return ret_list;
+}
+
+
+/* OLD CODE:
+ *
+ * Declarations
+   int n;  // number of nodes
+   int e;  // number of edges
+   double capacity[MAX_NODES][MAX_NODES]; // capacity matrix
+   double flow[MAX_NODES][MAX_NODES];     // flow matrix
+   int color[MAX_NODES]; // needed for breadth-first search
+   int pred[MAX_NODES];  // array to store augmenting path
+
+ *
+ *
+ * double min (double x, double y) {
     return x<y ? x : y;  // returns minimum of x and y
     }
 
@@ -71,7 +166,7 @@ void initialize(int num_nodes, int num_edges, double** arg_adj_mat) {
   //pred = new int[n];
   arr_cpy(capacity, arg_adj_mat, n);
 }
-
+ *
 //Breadth-First Search for an augmenting path
 int bfs (int start, int target) {
     int u,v;
@@ -97,6 +192,7 @@ int bfs (int start, int target) {
     // it means that we reached it.
     return color[target]==BLACK;
 }
+
 //Ford-Fulkerson Algorithm with BFS to obtain augmenting paths (Edmunds-Karp Implementation)
 double max_flow (int source, int sink) {
     int i,j,u;
@@ -125,29 +221,6 @@ double max_flow (int source, int sink) {
     // No augmenting path anymore. We are done.
   return max_flow;
 }
+*/
 
 
-//implementations
-
-double STMinCutSolver::solve_max_flow() {
-	int s = sourceVertex.vertex_no;
-	int t = terminalVertex.vertex_no;
-	max_flow_min_cut = max_flow(s,t);
-	return max_flow_min_cut;
-}
-
-list <Edge> STMinCutSolver::solve_min_cut() {
-	list<Edge> ret_list;
-	Edge saturated_edge;
-	//double** adj_mat = thisGraph.get_adj_mat();
-	for (int r = 0; r < thisGraph.get_graph_size();r++) {
-		for (int c = 0; c < thisGraph.get_graph_size();c++) {
-			if (flow[r][c] == capacity[r][c]) {
-				saturated_edge = Edge(r,c,capacity[r][c]);
-				ret_list.push_back(saturated_edge);
-			}
-		}
-	}
-	cut_set = ret_list;
-	return ret_list;
-}

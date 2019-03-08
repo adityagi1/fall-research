@@ -1,7 +1,7 @@
 /*Contains implementation of basic Queue & Graph Data Structures for use in the Isoation Branching Implementation
 @Author: Aditya Tyagi*/
-#define MAXQUEUESIZE 100000
 #define MAXGRAPHSIZE 6
+#define MAX_NODES 1000
 #include <queue>
 #include <list>
 #include <iterator>
@@ -45,7 +45,7 @@ private:
 	// num of vertices in the graph
 	int n;
 	// graph represented as an adjacency list of doubles
-	double adj_mat[][];
+	double adj_mat[MAX_NODES][MAX_NODES];
 	//no. of edges
 	int e;
 	//true if directed, false if not
@@ -61,20 +61,14 @@ public:
 		directed = dir;
 		e= 0;
 		//initialize adj_mat to all zeroes
-		double adj_mat[numVertices][numVertices] = {{0}};
-		for (int i = 0; i < numVertices; i++) {
-		     adj_mat[i] = new double[numVertices];
-		     for (int j = 0; j < numVertices; j++) {
-		         adj_mat[i][j] = 0.0;
-		 }
-		}
+		adj_mat = {{0}};
 	}
 
 	//member functions
 	//accessor methods:
 	int get_graph_size();
 	int get_num_edges();
-	double** get_adj_mat();
+	double[][] get_adj_mat();
 	double get_edge_weight(int start_vertex_no, int end_vertex_no);
 	bool get_directed();
 	list<Edge> get_edges();
